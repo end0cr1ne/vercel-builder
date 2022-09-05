@@ -179,14 +179,14 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   }
 
   // ----------------- Install dependencies -----------------
-//   startStep('Install dependencies')
+  startStep('Install dependencies')
 
-//   // Use node_modules_prod
-//   await prepareNodeModules(entrypointPath, 'node_modules_prod')
+  // Use node_modules_prod
+  await prepareNodeModules(entrypointPath, 'node_modules_prod')
 
-//   // Only keep core dependency
-//   const nuxtDep = preparePkgForProd(pkg)
-//   await fs.writeJSON('package.json', pkg)
+  // Only keep core dependency
+  const nuxtDep = preparePkgForProd(pkg)
+  await fs.writeJSON('package.json', pkg)
 
 //   await runNpmInstall(entrypointPath, [
 //     '--prefer-offline',
