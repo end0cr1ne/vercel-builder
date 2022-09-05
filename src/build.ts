@@ -90,9 +90,9 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   }
 
   // Write .yarnclean
-  if (isYarn && !fs.existsSync('../.yarnclean')) {
-    await fs.copyFile(path.join(__dirname, '../.yarnclean'), '.yarnclean')
-  }
+//   if (isYarn && !fs.existsSync('../.yarnclean')) {
+//     await fs.copyFile(path.join(__dirname, '../.yarnclean'), '.yarnclean')
+//   }
 
   // Cache dir
   const cachePath = path.resolve(entrypointPath, '.vercel_cache')
@@ -110,6 +110,16 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
     )
   }
 
+  // ----------------- Pre build -----------------
+  const buildSteps = ['vercel-build', 'now-build']
+  for (const step of buildSteps) {
+    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
+      startStep(`Pre build (${step})`)
+      await runPackageJsonScript(entrypointPath, step, spawnOpts)
+      break
+    }
+  }
+  
   // ----------------- Install devDependencies -----------------
   startStep('Install devDependencies')
 
@@ -125,16 +135,6 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
     `--modules-folder=${modulesPath}`,
     `--cache-folder=${yarnCachePath}`
   ], { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } }, meta)
-
-  // ----------------- Pre build -----------------
-  const buildSteps = ['vercel-build', 'now-build']
-  for (const step of buildSteps) {
-    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
-      startStep(`Pre build (${step})`)
-      await runPackageJsonScript(entrypointPath, step, spawnOpts)
-      break
-    }
-  }
 
   // ----------------- Nuxt build -----------------
   startStep('Nuxt build')
