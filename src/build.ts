@@ -223,9 +223,9 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
 //   }
 
   // Cleanup .npmrc
-  if (process.env.NPM_AUTH_TOKEN) {
-    await fs.unlink('.npmrc')
-  }
+//   if (process.env.NPM_AUTH_TOKEN) {
+//     await fs.unlink('.npmrc')
+//   }
 
   // ----------------- Collect artifacts -----------------
   startStep('Collect artifacts')
