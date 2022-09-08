@@ -179,7 +179,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   }
 
   // ----------------- Pre build -----------------
-  const buildSteps = ['vercel-build', 'now-build']
+//   const buildSteps = ['vercel-build', 'now-build']
   for (const step of buildSteps) {
     if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
       startStep(`Pre build (${step})`)
