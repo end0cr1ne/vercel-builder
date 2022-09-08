@@ -115,7 +115,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   for (const step of buildSteps) {
     if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
       startStep(`Pre build (${step})`)
-      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'production' } })
+      await runPackageJsonScript(entrypointPath, step, spawnOpts)
       break
     }
   }
@@ -131,10 +131,10 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
     '--prefer-offline',
     '--frozen-lockfile',
     '--non-interactive',
-    '--production=true',
+    '--production=false',
     `--modules-folder=${modulesPath}`,
     `--cache-folder=${yarnCachePath}`
-  ], { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'production' } }, meta)
+  ], { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } }, meta)
 
   // ----------------- Nuxt build -----------------
   startStep('Nuxt build')
@@ -178,6 +178,16 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
     ], spawnOpts)
   }
 
+  // ----------------- Pre build -----------------
+  const buildSteps = ['vercel-build', 'now-build']
+  for (const step of buildSteps) {
+    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
+      startStep(`Pre build (${step})`)
+      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'production' } })
+      break
+    }
+  }
+  
   // ----------------- Install dependencies -----------------
   startStep('Install dependencies')
 
@@ -188,29 +198,29 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   const nuxtDep = preparePkgForProd(pkg)
   await fs.writeJSON('package.json', pkg)
 
-//   await runNpmInstall(entrypointPath, [
-//     '--prefer-offline',
-//     '--pure-lockfile',
-//     '--non-interactive',
-//     '--production=true',
-//     `--modules-folder=${modulesPath}`,
-//     `--cache-folder=${yarnCachePath}`
-//   ], {
-//     ...spawnOpts,
-//     env: {
-//       ...spawnOpts.env,
-//       NPM_ONLY_PRODUCTION: 'true'
-//     }
-//   }, meta)
+  await runNpmInstall(entrypointPath, [
+    '--prefer-offline',
+    '--pure-lockfile',
+    '--non-interactive',
+    '--production=true',
+    `--modules-folder=${modulesPath}`,
+    `--cache-folder=${yarnCachePath}`
+  ], {
+    ...spawnOpts,
+    env: {
+      ...spawnOpts.env,
+      NPM_ONLY_PRODUCTION: 'true'
+    }
+  }, meta)
 
-  // Validate nuxt version
-//   const nuxtPkg = require(resolveFrom(entrypointPath, `@nuxt/core${nuxtDep.suffix}/package.json`))
-//   if (!gte(nuxtPkg.version, '2.4.0')) {
-//     throw new Error(`nuxt >= 2.4.0 is required, detected version ${nuxtPkg.version}`)
-//   }
-//   if (gt(nuxtPkg.version, '3.0.0')) {
-//     consola.warn('WARNING: nuxt >= 3.0.0 is not tested against this builder!')
-//   }
+  Validate nuxt version
+  const nuxtPkg = require(resolveFrom(entrypointPath, `@nuxt/core${nuxtDep.suffix}/package.json`))
+  if (!gte(nuxtPkg.version, '2.4.0')) {
+    throw new Error(`nuxt >= 2.4.0 is required, detected version ${nuxtPkg.version}`)
+  }
+  if (gt(nuxtPkg.version, '3.0.0')) {
+    consola.warn('WARNING: nuxt >= 3.0.0 is not tested against this builder!')
+  }
 
   // Cleanup .npmrc
   if (process.env.NPM_AUTH_TOKEN) {
@@ -236,7 +246,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   const generatedPagesFiles = config.generateStaticRoutes ? await globAndPrefix('**/*.*', generatedDir, './') : {}
 
   // node_modules_prod
-  const nodeModulesDir = path.join(entrypointPath, 'node_modules_dev')
+  const nodeModulesDir = path.join(entrypointPath, 'node_modules_prod')
   const nodeModules = await globAndPrefix('**', nodeModulesDir, 'node_modules')
 
   // Lambdas
