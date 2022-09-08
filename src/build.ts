@@ -236,7 +236,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   const generatedPagesFiles = config.generateStaticRoutes ? await globAndPrefix('**/*.*', generatedDir, './') : {}
 
   // node_modules_prod
-  const nodeModulesDir = path.join(entrypointPath, 'node_modules_prod')
+  const nodeModulesDir = path.join(entrypointPath, 'node_modules_dev')
   const nodeModules = await globAndPrefix('**', nodeModulesDir, 'node_modules')
 
   // Lambdas
