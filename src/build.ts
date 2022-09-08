@@ -214,13 +214,13 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   }, meta)
 
   // Validate nuxt version
-  const nuxtPkg = require(resolveFrom(entrypointPath, `@nuxt/core${nuxtDep.suffix}/package.json`))
-  if (!gte(nuxtPkg.version, '2.4.0')) {
-    throw new Error(`nuxt >= 2.4.0 is required, detected version ${nuxtPkg.version}`)
-  }
-  if (gt(nuxtPkg.version, '3.0.0')) {
-    consola.warn('WARNING: nuxt >= 3.0.0 is not tested against this builder!')
-  }
+//   const nuxtPkg = require(resolveFrom(entrypointPath, `@nuxt/core${nuxtDep.suffix}/package.json`))
+//   if (!gte(nuxtPkg.version, '2.4.0')) {
+//     throw new Error(`nuxt >= 2.4.0 is required, detected version ${nuxtPkg.version}`)
+//   }
+//   if (gt(nuxtPkg.version, '3.0.0')) {
+//     consola.warn('WARNING: nuxt >= 3.0.0 is not tested against this builder!')
+//   }
 
   // Cleanup .npmrc
   if (process.env.NPM_AUTH_TOKEN) {
