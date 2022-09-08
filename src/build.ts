@@ -213,7 +213,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
     }
   }, meta)
 
-  Validate nuxt version
+  // Validate nuxt version
   const nuxtPkg = require(resolveFrom(entrypointPath, `@nuxt/core${nuxtDep.suffix}/package.json`))
   if (!gte(nuxtPkg.version, '2.4.0')) {
     throw new Error(`nuxt >= 2.4.0 is required, detected version ${nuxtPkg.version}`)
