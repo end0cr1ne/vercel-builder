@@ -209,7 +209,10 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
     ...spawnOpts,
     env: {
       ...spawnOpts.env,
-      NPM_ONLY_PRODUCTION: 'true'
+      NPM_ONLY_PRODUCTION: 'true',
+      SHARP_IGNORE_GLOBAL_LIBVIPS: '1',
+      npm_config_arch: 'x64',
+      npm_config_platform: 'linux',
     }
   }, meta)
 
