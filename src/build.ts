@@ -112,13 +112,13 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
 
   // ----------------- Pre build -----------------
   const buildSteps = ['vercel-build', 'now-build']
-  for (const step of buildSteps) {
-    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
-      startStep(`Pre build (${step})`)
-      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } })
-      break
-    }
-  }
+//   for (const step of buildSteps) {
+//     if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
+//       startStep(`Pre build (${step})`)
+//       await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } })
+//       break
+//     }
+//   }
   
   // ----------------- Install devDependencies -----------------
   startStep('Install devDependencies')
@@ -180,13 +180,13 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
 
   // ----------------- Pre build -----------------
 //   const buildSteps = ['vercel-build', 'now-build']
-  for (const step of buildSteps) {
-    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
-      startStep(`Pre build (${step})`)
-      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'production' } })
-      break
-    }
-  }
+//   for (const step of buildSteps) {
+//     if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
+//       startStep(`Pre build (${step})`)
+//       await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'production' } })
+//       break
+//     }
+//   }
   
   // ----------------- Install dependencies -----------------
   startStep('Install dependencies')
