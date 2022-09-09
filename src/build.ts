@@ -126,6 +126,14 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   // Prepare node_modules
   await prepareNodeModules(entrypointPath, 'node_modules_dev')
 
+  for (const step of buildSteps) {
+    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
+      startStep(`Pre install (${step})`)
+      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } })
+      break
+    }
+  }
+  
   // Install all dependencies
   await runNpmInstall(entrypointPath, [
     '--prefer-offline',
