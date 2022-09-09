@@ -115,7 +115,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   for (const step of buildSteps) {
     if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
       startStep(`Pre build (${step})`)
-      await runPackageJsonScript(entrypointPath, 'NODE_ENV=development '+step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } })
+      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'development' } })
       break
     }
   }
