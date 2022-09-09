@@ -63,7 +63,7 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   }
 
   // Node version
-  const nodeVersion = await getNodeVersion(entrypointPath, undefined, {nodeVersion: '16.x'}, meta)
+  const nodeVersion = await getNodeVersion(entrypointPath, undefined, {nodeVersion: '16'}, meta)
   const spawnOpts = getSpawnOptions(meta, nodeVersion)
 
   // Prepare TypeScript environment if required.
