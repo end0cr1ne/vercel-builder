@@ -197,6 +197,14 @@ export async function build (opts: BuildOptions & { config: NuxtBuilderConfig })
   // Only keep core dependency
   const nuxtDep = preparePkgForProd(pkg)
   await fs.writeJSON('package.json', pkg)
+  
+  for (const step of buildSteps) {
+    if (pkg.scripts && Object.keys(pkg.scripts).includes(step)) {
+      startStep(`Pre install (${step})`)
+      await runPackageJsonScript(entrypointPath, step, { ...spawnOpts, env: { ...spawnOpts.env, NODE_ENV: 'production' } })
+      break
+    }
+  }
 
   await runNpmInstall(entrypointPath, [
     '--prefer-offline',
